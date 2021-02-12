@@ -43,6 +43,7 @@ export class GenerarCertificadoComponent implements OnInit {
   filteredPeriod: any[] = [];
   filteredMunicipal: any = {}
   fecha = new Date;
+  dataCuentasParticipacion: any = {};
   dataUsuariosPN: any = {};
   dataUsuariosPJ: any = {};
 
@@ -85,13 +86,12 @@ export class GenerarCertificadoComponent implements OnInit {
   ngOnInit(): void {
 
     this.filterCertificate();
-
-    let user=window["ibmPortalConfig"].currentUser;
-    this.datos.nitTercero = user;
-    //this.datos.nitTercero = '8603506247';    // Persona Juridica
-    //  this.datos.nitTercero = '8300393875';
-    //this.datos.nitTercero = '353555951';      //  Persona Natural
-    //this.datos.nitTercero = '167307276';
+   let user=window["ibmPortalConfig"].currentUser;
+   this.datos.nitTercero = user;
+   // this.datos.nitTercero = '353555951';    // Persona Juridica
+    // this.datos.nitTercero = '353555951';
+    //this.datos.nitTercero = '41786428';      //  Persona Natural
+    // this.datos.nitTercero = '1018414663';
 
     this.generateCertificate.datosDataPJ(this.datos.nitTercero).subscribe(
       (data) => {
@@ -249,18 +249,24 @@ export class GenerarCertificadoComponent implements OnInit {
       this.certifiedMunicipalityDos = false;
       this.descarga = false;
       this.datos.typeCertificate = document;
-
+      this.datos.identificacion = this.datos.nitTercero;
       this.spinnerService.show();
-      this.generateCertificate.queryCertificate(this.datos).subscribe(
+      this.generateCertificate.queryCuentas(this.datos).subscribe(
         (data) => {
           this.spinnerService.hide();
           this.certifiedYear = true;
-          this.servicios = data.sort(function (a, b) {
+          this.servicios = [];
+          for (let index = 0; index < data.anios.length; index++) {
+            this.servicios.push({ "year": data.anios[index] });
+          }
 
+          this.servicios = this.servicios.sort(function (a, b) {
             if (a.year > b.year) {
               return -1;
             }
           }).slice(0, 10);
+          this.dataCuentasParticipacion = data;
+
 
         }, (error: HttpErrorResponse) => {
           this.spinnerService.hide();
@@ -309,27 +315,7 @@ export class GenerarCertificadoComponent implements OnInit {
 
     } else if (this.datos.typeCertificate === 5) {
 
-      this.spinnerService.show();
-      this.generateCertificate.listMonths(this.datos).subscribe(
-        (data) => {
-          this.spinnerService.hide();
-          this.filteredPeriod = data;
-          this.certifiedPeriod = true;
-
-        }, (error: HttpErrorResponse) => {
-          console.log(error);
-          this.spinnerService.hide();
-
-          swal.fire({
-            title: 'Error',
-            text: 'El usuario no cuenta con este tipo de certificado.',
-            icon: 'error',
-          });
-
-
-        });
-
-
+      this.descarga = true;
     }
   }
 
@@ -737,23 +723,23 @@ export class GenerarCertificadoComponent implements OnInit {
                 this.fechaUno = `01/02/${this.fechaPeriodoUno.fecha.slice(0, -17)}`;
                 this.fechaUno.split('').reverse().join('');
                 this.fechaDos = `28/02/${this.fechaPeriodoDos.fecha.slice(0, -17)}`;
-              }else if (this.datos.periodOne === 'ABRIL') {
+              } else if (this.datos.periodOne === 'ABRIL') {
                 this.fechaUno = `01/04/${this.fechaPeriodoUno.fecha.slice(0, -17)}`;
                 this.fechaUno.split('').reverse().join('');
                 this.fechaDos = `30/04/${this.fechaPeriodoDos.fecha.slice(0, -17)}`;
-              }else if (this.datos.periodOne === 'JUNIO') {
+              } else if (this.datos.periodOne === 'JUNIO') {
                 this.fechaUno = `01/06/${this.fechaPeriodoUno.fecha.slice(0, -17)}`;
                 this.fechaUno.split('').reverse().join('');
                 this.fechaDos = `30/06/${this.fechaPeriodoDos.fecha.slice(0, -17)}`;
-              }else if (this.datos.periodOne === 'AGOSTO') {
+              } else if (this.datos.periodOne === 'AGOSTO') {
                 this.fechaUno = `01/08/${this.fechaPeriodoUno.fecha.slice(0, -17)}`;
                 this.fechaUno.split('').reverse().join('');
                 this.fechaDos = `31/08/${this.fechaPeriodoDos.fecha.slice(0, -17)}`;
-              }else if (this.datos.periodOne === 'OCTUBRE') {
+              } else if (this.datos.periodOne === 'OCTUBRE') {
                 this.fechaUno = `01/10/${this.fechaPeriodoUno.fecha.slice(0, -17)}`;
                 this.fechaUno.split('').reverse().join('');
                 this.fechaDos = `31/10/${this.fechaPeriodoDos.fecha.slice(0, -17)}`;
-              }else if (this.datos.periodOne === 'DICIEMBRE') {
+              } else if (this.datos.periodOne === 'DICIEMBRE') {
                 this.fechaUno = `01/12/${this.fechaPeriodoUno.fecha.slice(0, -17)}`;
                 this.fechaUno.split('').reverse().join('');
                 this.fechaDos = `31/12/${this.fechaPeriodoDos.fecha.slice(0, -17)}`;
@@ -992,7 +978,7 @@ export class GenerarCertificadoComponent implements OnInit {
 
     } else if (this.datos.typeCertificate === 5) {
 
-      this.downloadPDFCuentasParticipación();
+      this.downloadPDFCuentasParticipación2();
 
     }
 
@@ -1062,8 +1048,8 @@ export class GenerarCertificadoComponent implements OnInit {
       identificacion = this.dataUsuariosPN.datosPNIdentificacion;
 
     } else {
-      datos = this.dataUsuariosPJ.datosPJRazonSocial;
-      identificacion = this.dataUsuariosPJ.datosPJIdentificacion;
+      datos = this.dataUsuariosPJ.datosPJ.datosPJRazonSocial;
+      identificacion = this.dataUsuariosPJ.datosPJ.datosPJIdentificacion;
     }
 
     var titulo = 105;
@@ -1147,7 +1133,7 @@ export class GenerarCertificadoComponent implements OnInit {
     doc.setFontType('normal');
     doc.setFontSize(7);
     doc.text(20, 175 + data, 'NOTA: LAS PERSONAS JURÍDICAS PODRÁN ENTREGAR LOS CERTIFICADOS DE RETENCIÓN EN LA FUENTE, EN FORMA CONTINUA IMPRESA');
-    doc.text(20, 180 + data, 'POR COMPUTADOR, SIN NECESIDAD DE FIRMA AUTOGRAFA (D.R. 836/91)LOS DOCUMENTOS QUE SE ENCUENTRAN ALMACENADOS EN');
+    doc.text(20, 180 + data, 'POR COMPUTADOR, SIN NECESIDAD DE FIRMA AUTÓGRAFA (D.R. 836/91)LOS DOCUMENTOS QUE SE ENCUENTRAN ALMACENADOS EN');
     doc.text(20, 185 + data, 'MEDIOS MAGNÉTICOS O ELECTRÓNICOS PUEDAN SER IMPRESOS EN CUALQUIER PARTE UTILIZANDO EL COMPUTADOR, YA SEA EN LA SEDE');
     doc.text(20, 190 + data, 'DEL AGENTE DE RETENCIÓN O EN LA SEDE DEL RETENIDO (CONCEPTO DIAN 105489 DE 24-12-2007).LA UTILIZACIÓN DE ESTE CERTIFICADO');
     doc.text(20, 195 + data, 'EN LAS DECLARACIONES TRIBUTARIAS QUE SE SURTAN ANTE LAS AUTORIDADES COMPETENTES ES RESPONSABILIDAD EXCLUSIVA DE LA(S)');
@@ -1236,8 +1222,8 @@ export class GenerarCertificadoComponent implements OnInit {
       identificacion = this.dataUsuariosPN.datosPNIdentificacion;
 
     } else {
-      datos = this.dataUsuariosPJ.datosPJRazonSocial;
-      identificacion = this.dataUsuariosPJ.datosPJIdentificacion;
+      datos = this.dataUsuariosPJ.datosPJ.datosPJRazonSocial;
+      identificacion = this.dataUsuariosPJ.datosPJ.datosPJIdentificacion;
     }
 
 
@@ -1254,7 +1240,7 @@ export class GenerarCertificadoComponent implements OnInit {
     doc.text(85, 105, 'VR.ANTES IVA');
     doc.text(115, 105, 'TAR.IVA');
     doc.text(144, 105, 'IVA');
-    doc.text(156, 105, 'PORC');
+    doc.text(162, 105, '%');
     doc.text(170, 105, 'RETENCIÓN');
 
 
@@ -1338,7 +1324,7 @@ export class GenerarCertificadoComponent implements OnInit {
     doc.setFontType('normal');
     doc.setFontSize(7);
     doc.text(20, 175 + data, 'NOTA: LAS PERSONAS JURÍDICAS PODRÁN ENTREGAR LOS CERTIFICADOS DE RETENCIÓN EN LA FUENTE, EN FORMA CONTINUA IMPRESA');
-    doc.text(20, 180 + data, 'POR COMPUTADOR, SIN NECESIDAD DE FIRMA AUTOGRAFA (D.R. 836/91)LOS DOCUMENTOS QUE SE ENCUENTRAN ALMACENADOS EN');
+    doc.text(20, 180 + data, 'POR COMPUTADOR, SIN NECESIDAD DE FIRMA AUTÓGRAFA (D.R. 836/91)LOS DOCUMENTOS QUE SE ENCUENTRAN ALMACENADOS EN');
     doc.text(20, 185 + data, 'MEDIOS MAGNÉTICOS O ELECTRÓNICOS PUEDAN SER IMPRESOS EN CUALQUIER PARTE UTILIZANDO EL COMPUTADOR, YA SEA EN LA SEDE');
     doc.text(20, 190 + data, 'DEL AGENTE DE RETENCIÓN O EN LA SEDE DEL RETENIDO (CONCEPTO DIAN 105489 DE 24-12-2007).LA UTILIZACIÓN DE ESTE CERTIFICADO');
     doc.text(20, 195 + data, 'EN LAS DECLARACIONES TRIBUTARIAS QUE SE SURTAN ANTE LAS AUTORIDADES COMPETENTES ES RESPONSABILIDAD EXCLUSIVA DE LA(S)');
@@ -1438,8 +1424,8 @@ export class GenerarCertificadoComponent implements OnInit {
       identificacion = this.dataUsuariosPN.datosPNIdentificacion;
 
     } else {
-      datos = this.dataUsuariosPJ.datosPJRazonSocial;
-      identificacion = this.dataUsuariosPJ.datosPJIdentificacion;
+      datos = this.dataUsuariosPJ.datosPJ.datosPJRazonSocial;
+      identificacion = this.dataUsuariosPJ.datosPJ.datosPJIdentificacion;
     }
 
 
@@ -1511,7 +1497,7 @@ export class GenerarCertificadoComponent implements OnInit {
     doc.setFontType('normal');
     doc.setFontSize(7);
     doc.text(20, 175 + data, 'NOTA: LAS PERSONAS JURÍDICAS PODRÁN ENTREGAR LOS CERTIFICADOS DE RETENCIÓN EN LA FUENTE, EN FORMA CONTINUA IMPRESA');
-    doc.text(20, 180 + data, 'POR COMPUTADOR, SIN NECESIDAD DE FIRMA AUTOGRAFA (D.R. 836/91)LOS DOCUMENTOS QUE SE ENCUENTRAN ALMACENADOS EN');
+    doc.text(20, 180 + data, 'POR COMPUTADOR, SIN NECESIDAD DE FIRMA AUTÓGRAFA (D.R. 836/91)LOS DOCUMENTOS QUE SE ENCUENTRAN ALMACENADOS EN');
     doc.text(20, 185 + data, 'MEDIOS MAGNÉTICOS O ELECTRÓNICOS PUEDAN SER IMPRESOS EN CUALQUIER PARTE UTILIZANDO EL COMPUTADOR, YA SEA EN LA SEDE');
     doc.text(20, 190 + data, 'DEL AGENTE DE RETENCIÓN O EN LA SEDE DEL RETENIDO (CONCEPTO DIAN 105489 DE 24-12-2007).LA UTILIZACIÓN DE ESTE CERTIFICADO');
     doc.text(20, 195 + data, 'EN LAS DECLARACIONES TRIBUTARIAS QUE SE SURTAN ANTE LAS AUTORIDADES COMPETENTES ES RESPONSABILIDAD EXCLUSIVA DE LA(S)');
@@ -1604,8 +1590,8 @@ export class GenerarCertificadoComponent implements OnInit {
       identificacion = this.dataUsuariosPN.datosPNIdentificacion;
 
     } else {
-      datos = this.dataUsuariosPJ.datosPJRazonSocial;
-      identificacion = this.dataUsuariosPJ.datosPJIdentificacion;
+      datos = this.dataUsuariosPJ.datosPJ.datosPJRazonSocial;
+      identificacion = this.dataUsuariosPJ.datosPJ.datosPJIdentificacion;
     }
 
     var titulo = 105;
@@ -1615,8 +1601,8 @@ export class GenerarCertificadoComponent implements OnInit {
 
     doc.text(20, 105, 'PERIODO');
     doc.text(45, 105, 'CONCEPTO');
-    doc.text(116, 105, 'BASE');
-    doc.text(136, 105, '%');
+    doc.text(120, 105, 'BASE');
+    doc.text(145, 105, '%');
     doc.text(170, 105, 'RETENCIÓN');
 
     //  Porcentajes PDF
@@ -1654,9 +1640,9 @@ export class GenerarCertificadoComponent implements OnInit {
       doc.setFontSize(8);
       doc.text(20, 110 + data, element.periodo);
       doc.text(45, 110 + data, element.concepto);
-      doc.text(113, 110 + data, new Intl.NumberFormat("de-DE").format(element.base.toString()), { align: 'right' });
-      doc.text(157, 110 + data, `${element.porcentaje.toString()}`);
-      doc.text(179, 110 + data, new Intl.NumberFormat("de-DE").format(element.retencion.toString()));
+      doc.text(135, 110 + data, new Intl.NumberFormat("de-DE").format(element.base.toString()), { align: 'right' });
+      doc.text(145, 110 + data, `${element.porcentaje.toString()}`);
+      doc.text(190, 110 + data, new Intl.NumberFormat("de-DE").format(element.retencion.toString()), { align: 'right' });
 
     }
     doc.setFont('helvetica');
@@ -1692,7 +1678,7 @@ export class GenerarCertificadoComponent implements OnInit {
     doc.setFontType('normal');
     doc.setFontSize(7);
     doc.text(20, 190 + data, 'NOTA: LAS PERSONAS JURÍDICAS PODRÁN ENTREGAR LOS CERTIFICADOS DE RETENCIÓN EN LA FUENTE, EN FORMA CONTINUA IMPRESA');
-    doc.text(20, 195 + data, 'POR COMPUTADOR, SIN NECESIDAD DE FIRMA AUTOGRAFA (D.R. 836/91)LOS DOCUMENTOS QUE SE ENCUENTRAN ALMACENADOS EN');
+    doc.text(20, 195 + data, 'POR COMPUTADOR, SIN NECESIDAD DE FIRMA AUTÓGRAFA (D.R. 836/91)LOS DOCUMENTOS QUE SE ENCUENTRAN ALMACENADOS EN');
     doc.text(20, 200 + data, 'MEDIOS MAGNÉTICOS O ELECTRÓNICOS PUEDAN SER IMPRESOS EN CUALQUIER PARTE UTILIZANDO EL COMPUTADOR, YA SEA EN LA SEDE');
     doc.text(20, 205 + data, 'DEL AGENTE DE RETENCIÓN O EN LA SEDE DEL RETENIDO (CONCEPTO DIAN 105489 DE 24-12-2007).LA UTILIZACIÓN DE ESTE CERTIFICADO');
     doc.text(20, 210 + data, 'EN LAS DECLARACIONES TRIBUTARIAS QUE SE SURTAN ANTE LAS AUTORIDADES COMPETENTES ES RESPONSABILIDAD EXCLUSIVA DE LA(S)');
@@ -1724,7 +1710,29 @@ export class GenerarCertificadoComponent implements OnInit {
 
   }
 
+  downloadPDFCuentasParticipación2() {
+    let filtradorAnio = this.dataCuentasParticipacion.adjuntos.filter(item => item.anio == this.datos.year);
 
+    for (let index = 0; index < filtradorAnio.length; index++) {
+      let element = filtradorAnio[index];
+      let linkSource = `data:application/pdf;base64,${element.base64}`;
+      let downloadLink = document.createElement("a");
+      downloadLink.href = linkSource;
+      downloadLink.download = element.nombre;
+      downloadLink.click();
+
+    }
+
+    this.resolvePassword.reset();
+    this.certifiedYear = false;
+    this.certifiedPeriodicity = false;
+    this.certifiedPeriodicityDos = false;
+    this.certifiedPeriod = false;
+    this.certifiedMunicipality = false;
+    this.certifiedMunicipalityDos = false;
+    this.descarga = false;
+
+  }
   downloadPDFCuentasParticipación() {
 
     var mes = this.fecha.getMonth() + 1;
@@ -1786,8 +1794,8 @@ export class GenerarCertificadoComponent implements OnInit {
       identificacion = this.dataUsuariosPN.datosPNIdentificacion;
 
     } else {
-      datos = this.dataUsuariosPJ.datosPJRazonSocial;
-      identificacion = this.dataUsuariosPJ.datosPJIdentificacion;
+      datos = this.dataUsuariosPJ.datosPJ.datosPJRazonSocial;
+      identificacion = this.dataUsuariosPJ.datosPJ.datosPJIdentificacion;
     }
 
     var titulo = 105;
@@ -1873,7 +1881,7 @@ export class GenerarCertificadoComponent implements OnInit {
     doc.setFontType('normal');
     doc.setFontSize(7);
     doc.text(20, 190 + data, 'NOTA: LAS PERSONAS JURÍDICAS PODRÁN ENTREGAR LOS CERTIFICADOS DE RETENCIÓN EN LA FUENTE, EN FORMA CONTINUA IMPRESA');
-    doc.text(20, 195 + data, 'POR COMPUTADOR, SIN NECESIDAD DE FIRMA AUTOGRAFA (D.R. 836/91)LOS DOCUMENTOS QUE SE ENCUENTRAN ALMACENADOS EN');
+    doc.text(20, 195 + data, 'POR COMPUTADOR, SIN NECESIDAD DE FIRMA AUTÓGRAFA (D.R. 836/91)LOS DOCUMENTOS QUE SE ENCUENTRAN ALMACENADOS EN');
     doc.text(20, 200 + data, 'MEDIOS MAGNÉTICOS O ELECTRÓNICOS PUEDAN SER IMPRESOS EN CUALQUIER PARTE UTILIZANDO EL COMPUTADOR, YA SEA EN LA SEDE');
     doc.text(20, 205 + data, 'DEL AGENTE DE RETENCIÓN O EN LA SEDE DEL RETENIDO (CONCEPTO DIAN 105489 DE 24-12-2007).LA UTILIZACIÓN DE ESTE CERTIFICADO');
     doc.text(20, 210 + data, 'EN LAS DECLARACIONES TRIBUTARIAS QUE SE SURTAN ANTE LAS AUTORIDADES COMPETENTES ES RESPONSABILIDAD EXCLUSIVA DE LA(S)');

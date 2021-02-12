@@ -16,6 +16,15 @@ export class GenerateCertificateService {
   constructor(private http: HttpClient) { }
 
 
+  queryCuentas(listYears: any): any {
+
+    let header = { headers:new HttpHeaders({'Content-Type':'application/json'})};
+
+    return this.http.post(`http://52.247.56.140:8080/getCuentasParticipacion`, listYears, header);
+
+  }
+
+
   queryCertificate(listYears: any): any {
 
     let header = { headers:new HttpHeaders({'Content-Type':'application/json'})};
