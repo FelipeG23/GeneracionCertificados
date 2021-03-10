@@ -86,9 +86,9 @@ export class GenerarCertificadoComponent implements OnInit {
   ngOnInit(): void {
 
     this.filterCertificate();
-   let user=window["ibmPortalConfig"].currentUser;
-   this.datos.nitTercero = user;
-   // this.datos.nitTercero = '353555951';    // Persona Juridica
+    let user = window["ibmPortalConfig"].currentUser;
+    this.datos.nitTercero = user;
+    //  this.datos.nitTercero = '353555951';    // Persona Juridica
     // this.datos.nitTercero = '353555951';
     //this.datos.nitTercero = '41786428';      //  Persona Natural
     // this.datos.nitTercero = '1018414663';
@@ -720,27 +720,27 @@ export class GenerarCertificadoComponent implements OnInit {
                 this.fechaUno.split('').reverse().join('');
                 this.fechaDos = `31/10/${this.fechaPeriodoDos.fecha.slice(0, -17)}`;
               } else if (this.datos.periodOne === 'FEBRERO') {
-                this.fechaUno = `01/02/${this.fechaPeriodoUno.fecha.slice(0, -17)}`;
+                this.fechaUno = `01/01/${this.fechaPeriodoUno.fecha.slice(0, -17)}`;
                 this.fechaUno.split('').reverse().join('');
                 this.fechaDos = `28/02/${this.fechaPeriodoDos.fecha.slice(0, -17)}`;
               } else if (this.datos.periodOne === 'ABRIL') {
-                this.fechaUno = `01/04/${this.fechaPeriodoUno.fecha.slice(0, -17)}`;
+                this.fechaUno = `01/03/${this.fechaPeriodoUno.fecha.slice(0, -17)}`;
                 this.fechaUno.split('').reverse().join('');
                 this.fechaDos = `30/04/${this.fechaPeriodoDos.fecha.slice(0, -17)}`;
               } else if (this.datos.periodOne === 'JUNIO') {
-                this.fechaUno = `01/06/${this.fechaPeriodoUno.fecha.slice(0, -17)}`;
+                this.fechaUno = `01/05/${this.fechaPeriodoUno.fecha.slice(0, -17)}`;
                 this.fechaUno.split('').reverse().join('');
                 this.fechaDos = `30/06/${this.fechaPeriodoDos.fecha.slice(0, -17)}`;
               } else if (this.datos.periodOne === 'AGOSTO') {
-                this.fechaUno = `01/08/${this.fechaPeriodoUno.fecha.slice(0, -17)}`;
+                this.fechaUno = `01/07/${this.fechaPeriodoUno.fecha.slice(0, -17)}`;
                 this.fechaUno.split('').reverse().join('');
                 this.fechaDos = `31/08/${this.fechaPeriodoDos.fecha.slice(0, -17)}`;
               } else if (this.datos.periodOne === 'OCTUBRE') {
-                this.fechaUno = `01/10/${this.fechaPeriodoUno.fecha.slice(0, -17)}`;
+                this.fechaUno = `01/09/${this.fechaPeriodoUno.fecha.slice(0, -17)}`;
                 this.fechaUno.split('').reverse().join('');
                 this.fechaDos = `31/10/${this.fechaPeriodoDos.fecha.slice(0, -17)}`;
               } else if (this.datos.periodOne === 'DICIEMBRE') {
-                this.fechaUno = `01/12/${this.fechaPeriodoUno.fecha.slice(0, -17)}`;
+                this.fechaUno = `01/11/${this.fechaPeriodoUno.fecha.slice(0, -17)}`;
                 this.fechaUno.split('').reverse().join('');
                 this.fechaDos = `31/12/${this.fechaPeriodoDos.fecha.slice(0, -17)}`;
 
@@ -1021,8 +1021,8 @@ export class GenerarCertificadoComponent implements OnInit {
     doc.setFont('helvetica');
     doc.setFontType('bold');
     doc.setFontSize(10);
-    doc.text(68, 25, `CERTIFICADO DE RETENCIÓN EN LA FUENTE POR ICA`);
-    doc.text(95, 30, `AÑO GRAVABLE ${this.datos.year}`);
+    doc.text(58, 25, `CERTIFICADO DE RETENCIÓN EN LA FUENTE POR ICA`);
+    doc.text(90, 30, `AÑO GRAVABLE ${this.datos.year}`);
     doc.text(75, 35, 'FUNDACIÓN SANTA FE DE BOGOTÁ');
     doc.text(92, 40, 'NIT: 860037950 - 2');
     doc.text(72, 45, 'CALLE 119 No. 7 - 75 TELÉFONO 6030303');
@@ -1044,7 +1044,7 @@ export class GenerarCertificadoComponent implements OnInit {
 
     if (this.dataUsuariosPJ === null) {
 
-      datos = this.dataUsuariosPN.datosPNApellidosNombres;
+      datos = this.dataUsuariosPN.datosPNApellidos + " " + this.dataUsuariosPN.datosPNNombres;
       identificacion = this.dataUsuariosPN.datosPNIdentificacion;
 
     } else {
@@ -1199,8 +1199,8 @@ export class GenerarCertificadoComponent implements OnInit {
     doc.setFont('helvetica');
     doc.setFontType('bold');
     doc.setFontSize(10);
-    doc.text(68, 25, 'CERTIFICADO DE RETENCIÓN EN LA FUENTE POR IVA');
-    doc.text(95, 30, `AÑO GRAVABLE ${this.datos.year}`);
+    doc.text(58, 25, 'CERTIFICADO DE RETENCIÓN EN LA FUENTE POR IVA');
+    doc.text(90, 30, `AÑO GRAVABLE ${this.datos.year}`);
     doc.text(75, 35, 'FUNDACIÓN SANTA FE DE BOGOTÁ');
     doc.text(92, 40, 'NIT: 860037950 - 2');
     doc.text(72, 45, 'CALLE 119 No. 7 - 75 TELÉFONO 6030303');
@@ -1217,8 +1217,8 @@ export class GenerarCertificadoComponent implements OnInit {
     var identificacion: any;
 
     if (this.dataUsuariosPJ === null) {
+      datos = this.dataUsuariosPN.datosPNApellidos + " " + this.dataUsuariosPN.datosPNNombres;
 
-      datos = this.dataUsuariosPN.datosPNApellidosNombres;
       identificacion = this.dataUsuariosPN.datosPNIdentificacion;
 
     } else {
@@ -1401,8 +1401,8 @@ export class GenerarCertificadoComponent implements OnInit {
     doc.setFont('helvetica');
     doc.setFontType('bold');
     doc.setFontSize(10);
-    doc.text(68, 25, 'CERTIFICADO DE RETENCIÓN EN LA FUENTE POR TIMBRE');
-    doc.text(95, 30, `AÑO GRAVABLE ${this.datos.year}`);
+    doc.text(58, 25, 'CERTIFICADO DE RETENCIÓN EN LA FUENTE POR TIMBRE');
+    doc.text(90, 30, `AÑO GRAVABLE ${this.datos.year}`);
     doc.text(75, 35, 'FUNDACIÓN SANTA FE DE BOGOTÁ');
     doc.text(92, 40, 'NIT: 860037950 - 2');
     doc.text(72, 45, 'CALLE 119 No. 7 - 75 TELÉFONO 6030303');
@@ -1412,15 +1412,15 @@ export class GenerarCertificadoComponent implements OnInit {
     doc.setFont('helvetica');
     doc.setFontType('normal');
     doc.setFontSize(10);
-    doc.text(20, 65, `Que durante el periodo comprendido entre ${this.fechaUno} y ${this.fechaDos} ${ciudad} se práctico`);
-    doc.text(20, 70, `y consignó retención en la fuente Título de Renta a:`);
+    doc.text(20, 65, `Que durante el periodo comprendido entre 01/01/${this.datos.year} y 31/12/${this.datos.year} ${ciudad} se práctico`);
+    doc.text(20, 70, `y consignó retención en la fuente  por Impuesto de Timbre a:`);
 
     var datos: any;
     var identificacion: any;
 
     if (this.dataUsuariosPJ === null) {
 
-      datos = this.dataUsuariosPN.datosPNApellidosNombres;
+      datos = this.dataUsuariosPN.datosPNApellidos + " " + this.dataUsuariosPN.datosPNNombres;
       identificacion = this.dataUsuariosPN.datosPNIdentificacion;
 
     } else {
@@ -1436,12 +1436,17 @@ export class GenerarCertificadoComponent implements OnInit {
     var tamañotITULO = datos.length;
     doc.text(titulo - tamañotITULO, 85, `${datos.toUpperCase()}`);
     doc.text(97, 90, `${identificacion}`);
-
+    doc.setFont('helvetica');
+    doc.setFontType('bold');
+    doc.setFontSize(8);
     doc.text(20, 105, 'PERIODO');
     doc.text(50, 105, 'CONCEPTO');
-    doc.text(110, 105, 'BASE');
-    doc.text(130, 105, '%');
-    doc.text(170, 105, 'RETENCIÓN');
+    doc.text(80, 105, 'MONTO BASE');
+    doc.text(110, 105, 'T.A.R');
+    doc.text(130, 105, 'VR. IMPUESTO');
+    doc.text(130, 108, 'PAGADO');
+    doc.text(170, 105, 'VR. IMPUESTO');
+    doc.text(170, 108, 'RETENIDO');
 
     //  Porcentajes PDF
     doc.setFont('helvetica');
@@ -1452,10 +1457,16 @@ export class GenerarCertificadoComponent implements OnInit {
     var data: number = 0;
     var retenido: number = 0;
 
+    var montoBasteTotal: number = 0;
+    var impuestoPagadoTotal: number = 0;
+    var impuestoretenidoTotal: number = 0;
+
     for (let index = 0; index < this.listaDatosAnual.length; index++) {
       const element = this.listaDatosAnual[index];
-
-      retenido += element.retencion;
+      retenido += element.impuestopagado;
+      montoBasteTotal += element.montobase;
+      impuestoPagadoTotal += element.impuestopagado;
+      impuestoretenidoTotal += element.impuestoretenido;
     }
 
     var retenidoTexto = trans.NumerosALetras(retenido) + " PESOS MCTE";
@@ -1468,18 +1479,27 @@ export class GenerarCertificadoComponent implements OnInit {
 
       doc.setFontSize(8);
       doc.text(20, 110 + data, element.periodo);
-      doc.text(50, 110 + data, element.concepto);
-      doc.text(109, 110 + data, element.base.toString());
-      doc.text(135, 110 + data, `${element.porcentaje.toString()}`);
-      doc.text(175, 110 + data, element.retencion.toString());
-
+      doc.text(50, 110 + data, element.contrato == undefined ? "" : element.contrato);
+      doc.text(99, 110 + data, new Intl.NumberFormat("de-DE").format(element.montobase.toString()), { align: 'right' });
+      doc.text(114, 110 + data, `${element.tar}` == undefined ? "" : `${element.tar}`);
+      doc.text(150, 110 + data, new Intl.NumberFormat("de-DE").format(element.impuestopagado.toString()), { align: 'right' });
+      doc.text(190, 110 + data, new Intl.NumberFormat("de-DE").format(element.impuestoretenido.toString()), { align: 'right' });
     }
+
+    doc.setFont('helvetica');
+    doc.setFontType('bold');
+    doc.setFontSize(8);
+
+    doc.text(20, 120 + data, "TOTAL");
+    doc.text(99, 120 + data, new Intl.NumberFormat("de-DE").format(montoBasteTotal), { align: 'right' });
+    doc.text(150, 120 + data, new Intl.NumberFormat("de-DE").format(impuestoPagadoTotal), { align: 'right' });
+    doc.text(190, 120 + data, new Intl.NumberFormat("de-DE").format(impuestoretenidoTotal), { align: 'right' });
 
 
     doc.setFont('helvetica');
     doc.setFontType('bold');
     doc.setFontSize(10);
-    doc.text(20, 130 + data, `VALOR RETENIDO:  $${retenido}`);
+    doc.text(20, 130 + data, `VALOR RETENIDO:  $` + new Intl.NumberFormat("de-DE").format(retenido));
     doc.setFontSize(8);
     doc.text(20, 135 + data, `${retenidoTexto}`);
     doc.setFont('helvetica');
@@ -1563,7 +1583,7 @@ export class GenerarCertificadoComponent implements OnInit {
     doc.setFont('helvetica');
     doc.setFontType('bold');
     doc.setFontSize(10);
-    doc.text(68, 25, `CERTIFICADO DE RETENCIÓN EN LA FUENTE POR RENTA`);
+    doc.text(58, 25, `CERTIFICADO DE RETENCIÓN EN LA FUENTE POR RENTA`);
     doc.text(95, 30, `AÑO GRAVABLE ${this.datos.year}`);
     doc.text(75, 35, 'FUNDACIÓN SANTA FE DE BOGOTÁ');
     doc.text(92, 40, 'NIT: 860037950 - 2');
@@ -1586,7 +1606,7 @@ export class GenerarCertificadoComponent implements OnInit {
 
     if (this.dataUsuariosPJ === null) {
 
-      datos = this.dataUsuariosPN.datosPNApellidosNombres;
+      datos = this.dataUsuariosPN.datosPNApellidos + " " + this.dataUsuariosPN.datosPNNombres;
       identificacion = this.dataUsuariosPN.datosPNIdentificacion;
 
     } else {
@@ -1767,8 +1787,8 @@ export class GenerarCertificadoComponent implements OnInit {
     doc.setFont('helvetica');
     doc.setFontType('bold');
     doc.setFontSize(10);
-    doc.text(68, 25, `CERTIFICADO DE RETENCIÓN EN LA FUENTE POR CUENTAS`);
-    doc.text(95, 30, `AÑO GRAVABLE ${this.datos.year}`);
+    doc.text(58, 25, `CERTIFICADO DE RETENCIÓN EN LA FUENTE POR CUENTAS`);
+    doc.text(90, 30, `AÑO GRAVABLE ${this.datos.year}`);
     doc.text(75, 35, 'FUNDACIÓN SANTA FE DE BOGOTÁ');
     doc.text(92, 40, 'NIT: 860037950 - 2');
     doc.text(72, 45, 'CALLE 119 No. 7 - 75 TELÉFONO 6030303');
@@ -1790,7 +1810,7 @@ export class GenerarCertificadoComponent implements OnInit {
 
     if (this.dataUsuariosPJ === null) {
 
-      datos = this.dataUsuariosPN.datosPNApellidosNombres;
+      datos = this.dataUsuariosPN.datosPNApellidos + " " + this.dataUsuariosPN.datosPNNombres;
       identificacion = this.dataUsuariosPN.datosPNIdentificacion;
 
     } else {
@@ -1934,7 +1954,9 @@ export class GenerarCertificadoComponent implements OnInit {
     return this.servicios.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
   }
 
-
+  numberWithPoints(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
 
   displayFn(item) {
     return item ? item.descripcion : undefined;
