@@ -1014,7 +1014,7 @@ export class GenerarCertificadoComponent implements OnInit {
 
 
     var logo = new Image();
-    logo.src = './assets/images/fsfb.png';
+    logo.src = '/wps/contenthandler/dav/fs-type1/themes/PROVEEDORES-Home/images/santafelogo.png';
 
     let doc = new jsPDF();
     doc.addImage(logo, 'JPEG', 10, 5, 50, 20);
@@ -1191,7 +1191,7 @@ export class GenerarCertificadoComponent implements OnInit {
     }
 
     var logo = new Image();
-    logo.src = './assets/images/fsfb.png';
+    logo.src = '/wps/contenthandler/dav/fs-type1/themes/PROVEEDORES-Home/images/santafelogo.png';
 
 
     let doc = new jsPDF('', '', [600, 1000]);
@@ -1394,7 +1394,7 @@ export class GenerarCertificadoComponent implements OnInit {
 
 
     var logo = new Image();
-    logo.src = './assets/images/fsfb.png';
+    logo.src = '/wps/contenthandler/dav/fs-type1/themes/PROVEEDORES-Home/images/santafelogo.png';
 
     let doc = new jsPDF();
     doc.addImage(logo, 'JPEG', 10, 5, 50, 20);
@@ -1576,7 +1576,7 @@ export class GenerarCertificadoComponent implements OnInit {
 
 
     var logo = new Image();
-    logo.src = './assets/images/fsfb.png';
+    logo.src = '/wps/contenthandler/dav/fs-type1/themes/PROVEEDORES-Home/images/santafelogo.png';
 
     let doc = new jsPDF('', '', [600, 1000]);
     doc.addImage(logo, 'JPEG', 10, 5, 50, 20);
@@ -1780,7 +1780,7 @@ export class GenerarCertificadoComponent implements OnInit {
     }
 
     var logo = new Image();
-    logo.src = './assets/images/fsfb.png';
+    logo.src = '/wps/contenthandler/dav/fs-type1/themes/PROVEEDORES-Home/images/santafelogo.png';
 
     let doc = new jsPDF('', '', [600, 1000]);
     doc.addImage(logo, 'JPEG', 10, 5, 50, 20);
