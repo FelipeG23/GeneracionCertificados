@@ -88,7 +88,7 @@ export class GenerarCertificadoComponent implements OnInit {
     this.filterCertificate();
     let user = window["ibmPortalConfig"].currentUser;
     this.datos.nitTercero = user;
-    //  this.datos.nitTercero = '353555951';    // Persona Juridica
+    //this.datos.nitTercero = '10726465078';    // Persona Juridica
     // this.datos.nitTercero = '353555951';
     //this.datos.nitTercero = '41786428';      //  Persona Natural
     // this.datos.nitTercero = '1018414663';
@@ -889,23 +889,32 @@ export class GenerarCertificadoComponent implements OnInit {
 
       if (this.datos.periodOne === 'ENERO - FEBRERO') {
         this.datos.periodOne = 'ENERO'
+        this.datos.periodTwo = 'FEBRERO'
       } else if (this.datos.periodOne === 'JULIO - AGOSTO') {
         this.datos.periodOne = 'JULIO'
+        this.datos.periodTwo = 'AGOSTO'
       } else if (this.datos.periodOne === 'MARZO - ABRIL') {
         this.datos.periodOne = 'MARZO'
+        this.datos.periodTwo = 'ABRIL'
       } else if (this.datos.periodOne === 'MAYO - JUNIO') {
         this.datos.periodOne = 'MAYO'
+        this.datos.periodTwo = 'JUNIO'
+
       } else if (this.datos.periodOne === 'NOVIEMBRE - DICIEMBRE') {
         this.datos.periodOne = 'NOVIEMBRE'
+        this.datos.periodTwo = 'DICIEMBRE'
+
       } else if (this.datos.periodOne === 'SEPTIEMBRE - OCTUBRE') {
         this.datos.periodOne = 'SEPTIEMBRE'
+        this.datos.periodTwo = 'OCTUBRE'
+
       }
     }
 
 
 
     if (this.datos.typeCertificate === 1 || this.datos.typeCertificate === 2) {
-
+      console.log(this.datos);
       this.spinnerService.show();
       this.generateCertificate.listMunicipalities(this.datos).subscribe(
         (data) => {
@@ -929,6 +938,8 @@ export class GenerarCertificadoComponent implements OnInit {
     } else if (this.datos.typeCertificate === 5) {
 
       this.spinnerService.show();
+
+     
       this.generateCertificate.listMunicipalities(this.datos).subscribe(
         (data) => {
           this.spinnerService.hide();
